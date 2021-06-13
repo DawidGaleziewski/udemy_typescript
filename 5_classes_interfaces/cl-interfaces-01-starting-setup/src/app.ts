@@ -4,7 +4,6 @@ class Department {
     name: string;
     numberOfWorkers: number = 0
 
-
     constructor(newName: string, numberOfWorkers: number){
         this.name = newName
         this.numberOfWorkers = numberOfWorkers
@@ -50,7 +49,7 @@ class Cart {
 }
 
 const cart = new Cart('clothes');
-cart.addItem('t-shirt');
+cart.addItem('t-shirt 1');
 cart.addItem('pants');
 console.log('cart items ', cart.getItems())
 
@@ -60,12 +59,11 @@ console.log('cart items ', cart.getItems())
 // #3 Shorthand - avoid repetition in constructor
 
 class CartShorthand {
-    private items: string[] = [];
     // public type: string;
 
     // In this case we have to use public keyword as this will tell typescript we also want to create properties in class for this same name
     // readonly typescript modifier - property CANT be changed
-    constructor(public type: string, private readonly id: string){
+    constructor(public type: string, protected readonly id: string, protected items: string[]= []){
         this.type = type;
         this.id = id;
     }
@@ -94,11 +92,49 @@ const IT = new ITsDepartment('Helpdesk', 32, ['Mark',' Matt']);
 
 console.log('IT', IT.describe('Ilfords'));
 
-class AccountingDepartment extends Department {
-    constructor(newName: string, numberOfWorkers: number, private reports: string[] = []){
-        super(newName, numberOfWorkers)
+// Protected is a kaeword that can be inherited. Private properties CANNOT be inherited
+class CartHealthy extends CartShorthand {
+    constructor(public type: string, protected readonly id: string, protected items: string[]= []){
+        super( type, id, items)
     }
-    addReport(report: string){
-        this.reports.push(report)
+
+    addItem(item: string){
+        if(item === 'sugar'){
+            return;
+        }
+        this.items.push(item)
     }
 }
+
+//#4 getters and setters
+class HRDepartment extends Department {
+    private lastHiredPersonName: string
+    //If we want to modify a private value we will need to use a getter method
+    get mostRecentName(){
+        // getter needs to return something
+        return this.lastHiredPersonName;
+    }
+
+    // In same fashion setter can be used to access the value and modify it
+    set mostRecentName(value: string){
+        this.lastHiredPersonName = value
+    }
+
+    constructor(newName: string, numberOfWorkers: number){
+        super(newName, numberOfWorkers)
+        this.lastHiredPersonName = 'Johny B'
+    }
+
+    setNewLastHiredName(name: string){
+        this.lastHiredPersonName = name
+    }
+}
+
+const HR = new HRDepartment('hry', 13);
+
+// getter is accessed as a normal property, without any ()
+console.log('HR getter', HR.mostRecentName)
+
+// Setters work in similar fashion, we dont call them as methods
+HR.mostRecentName = 'Mike'
+console.log('HR setter', HR.mostRecentName)
