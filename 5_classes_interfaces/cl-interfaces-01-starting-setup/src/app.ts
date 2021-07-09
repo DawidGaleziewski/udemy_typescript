@@ -190,3 +190,32 @@ class Cat extends Animal {
 
 // We cannot make a instance of a abstract class
 const animalInstance = new Animal()
+
+
+// #7 private constructors
+
+// Connected to singleton pattern
+class OneOfAKind {
+    // Instance of this class
+    private static instance: OneOfAKind;
+    private constructor(public id: number){
+
+    }
+
+    static getInstance(){
+        // Check if we have a instance and return a new one only in this case
+        if(this.instance){
+            return this.instance
+        }
+
+        // If there is no instance we can create it due to the fact that we can use a private constructor insde the class
+        this.instance = new OneOfAKind(1);
+        return this.instance;
+    }
+}
+
+// Now we cannot create a new instance of the class
+const instanceOfOOK = new OneOfAKind(2)
+
+// We can get a instance of the class hover using its class
+const instanceSingletton = OneOfAKind.getInstance()

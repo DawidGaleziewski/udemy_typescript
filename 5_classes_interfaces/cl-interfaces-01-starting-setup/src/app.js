@@ -193,3 +193,24 @@ var Cat = /** @class */ (function (_super) {
 }(Animal));
 // We cannot make a instance of a abstract class
 var animalInstance = new Animal();
+// #7 private constructors
+// Connected to singleton pattern
+var OneOfAKind = /** @class */ (function () {
+    function OneOfAKind(id) {
+        this.id = id;
+    }
+    OneOfAKind.getInstance = function () {
+        // Check if we have a instance and return a new one only in this case
+        if (this.instance) {
+            return this.instance;
+        }
+        // If there is no instance we can create it due to the fact that we can use a private constructor insde the class
+        this.instance = new OneOfAKind(1);
+        return this.instance;
+    };
+    return OneOfAKind;
+}());
+// Now we cannot create a new instance of the class
+var instanceOfOOK = new OneOfAKind(2);
+// We can get a instance of the class hover using its class
+var instanceSingletton = OneOfAKind.getInstance();
