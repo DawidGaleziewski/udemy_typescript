@@ -138,3 +138,55 @@ console.log('HR getter', HR.mostRecentName)
 // Setters work in similar fashion, we dont call them as methods
 HR.mostRecentName = 'Mike'
 console.log('HR setter', HR.mostRecentName)
+
+
+// #5 static methods & properties
+
+
+class Toolbox {
+    // static methods and properties are not accessed on the instance of the class but from the class itself.
+    // Used for utility functions that we want to group or map together or global constants. Similar to Math constructor
+    static numberOfTools = 20
+    static useHammer(times: number){
+        console.log(`Uses hammer ${times} times`)
+    }
+
+
+    constructor(){
+            // We cannot access those from constructor
+        console.log(this.numberOfTools)
+    }
+}
+
+Toolbox.useHammer(5);
+
+const toolInstance = new Toolbox();
+
+// Typescript throws error as this should not be used on a instance of a class
+toolInstance.useHammer()
+
+// #6 abstract classes
+
+// We can force the developers to implement a certain method or overrwite it.
+
+// Abstaract methods need to be used in abstract classes
+
+abstract class Animal {
+    // It cannot have a {} and requires a return type
+    abstract eat(food: 'string'): void
+}
+
+class Dog extends Animal {
+    //  Without this method typescript will throw a error
+    eat(food: 'string'){
+        console.log(`nom nom eathin ${food}`)
+    }
+}
+
+// Typescript throws error as cat has no method eat() implemented
+class Cat extends Animal {
+
+}
+
+// We cannot make a instance of a abstract class
+const animalInstance = new Animal()
