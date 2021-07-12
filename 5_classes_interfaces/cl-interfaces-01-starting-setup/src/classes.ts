@@ -219,3 +219,4 @@ const instanceOfOOK = new OneOfAKind(2)
 
 // We can get a instance of the class hover using its class
 const instanceSingletton = OneOfAKind.getInstance()
+
