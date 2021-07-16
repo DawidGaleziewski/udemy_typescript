@@ -11,7 +11,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 // For class decorators there is one argument that is the constructor of that class
 function Logger(constructor) {
-    console.log('Logging...', constructor);
+    console.log('Logging in...', constructor);
 }
 // Decorator starts with @ symbol
 var Person = /** @class */ (function () {
@@ -40,4 +40,47 @@ var Test = /** @class */ (function () {
         GreetFactory('have a nice day')
     ], Test);
     return Test;
+}());
+// #2 useful decorators
+function WithTemplate(template, hookId) {
+    // Underscode is a convention where we tell typescript that we need to specify a argument but we will not use it
+    return function (constructor) {
+        var element = document.getElementById(hookId);
+        if (element) {
+            element.innerHTML = template;
+            // Find h1 tag and inform TS it will never be null
+            var h1Tag = element.querySelector('h1');
+            // We can run the constructor inside the class
+            var classConstructor = new constructor();
+            // we can access the variables inside the class constructor
+            var name_1 = classConstructor.name;
+            // We can set up the tag with the name from the constructor
+            h1Tag.textContent = name_1;
+        }
+    };
+}
+var Item = /** @class */ (function () {
+    function Item(name) {
+        if (name === void 0) { name = 'test'; }
+        this.name = name;
+    }
+    Item = __decorate([
+        WithTemplate('<h1>Item class was created</h1>', 'itemID')
+    ], Item);
+    return Item;
+}());
+// This kind of code is used in angular
+// #3 Multiple decorators
+function LoggerOut(_) {
+    console.log('Logging out...');
+}
+// Important this that the first closest to the function decorator will be executed. First @Logger and after that @LoggerOut
+var Test2 = /** @class */ (function () {
+    function Test2() {
+    }
+    Test2 = __decorate([
+        LoggerOut,
+        Logger
+    ], Test2);
+    return Test2;
 }());
