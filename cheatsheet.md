@@ -464,3 +464,14 @@ function mergeWithConstrains<T extends object, U extends object>(
 ```
 
 ## keyof kayword
+
+When we want to make sure one param is a property of another param
+
+```typescript
+function extractAndConvert<T extends object, U extends keyof T>(
+  obj: T,
+  key: U
+) {
+  return obj[key];
+}
+```
