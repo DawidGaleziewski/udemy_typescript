@@ -475,3 +475,143 @@ function extractAndConvert<T extends object, U extends keyof T>(
   return obj[key];
 }
 ```
+
+# Decorators
+
+## Basics
+
+Generators are functions that apply to a class in a diffrent way.
+
+Depending on where the decorator is put in the class it will accept diffrent arguments
+
+1. Class decorator
+
+Only one argument - constructor of the class
+
+```typescript
+function ClassDecorator(constructor: Function) {
+  console.log("class was init");
+}
+
+@ClassDecorator
+class User {}
+```
+
+2. Property decorator
+
+- first argument - target
+- second argument - property name
+
+```typescript
+function PropertyDecorator(target: any, propertyName: string) {
+  console.log("class was init");
+}
+
+class User {
+  userName: string;
+
+  constructor(name: string) {
+    this.userName = name;
+  }
+}
+```
+
+3. Method and accessor decorators
+
+- first argument - target
+- second ardument - name
+- descriptor - its own type PropertyDescriptor
+
+```typescript
+function MethodDecorator(
+  target: any,
+  name: string,
+  descriptor: PropertyDescriptor
+) {
+  console.log("class was init");
+}
+
+class User {
+  @MethodDecorator
+  set logDate() {
+    console.log(`Log date is ${new Date()}`);
+  }
+
+  @MethodDecorator
+  introduce() {
+    console.log("Hello my name is");
+  }
+}
+```
+
+4. Param decorator
+
+- target
+- name
+- position
+
+```typescript
+function ParamDecorator(target: any, name: string, position: number) {
+  console.log("class was init");
+}
+class User {
+  introduce(@ParamDecorator name: string) {
+    console.log(`Hi my name is ${name}`);
+  }
+}
+```
+
+# adding 3rd party libraries
+
+Many libraties will have their type definitions and we can install those via:
+npm i --save-dev @types/
+
+# declare global object
+
+If we know a value exists on a global scope i.e. added in script tags
+
+```typescript
+declare var Global: string;
+```
+
+# React
+
+## Types for components
+
+We can declare that a function is a functional component
+
+```typescript
+const App: React.FC = () => {};
+```
+
+## Property types
+
+We define props by using interface and the fact that the React.FC is a generic
+
+```typescript
+interface NewTodoProps {
+  onAddTodo: (text: string) => void;
+}
+
+const NewTodo: React.FC<NewTodoProps> = (props) => {};
+```
+
+## useState and useRef
+
+When our type will change from one type to another we can use generics to pass it to hooks so that we wont get an error when the type changes
+
+```typescript
+const textInputRef = useRef<HTMLInputElement>(null);
+const [todos, setTodos] = useState<Todo[]>([]);
+```
+
+## events
+
+We can use types for react events on React object
+
+```typescript
+const formHandler = (event: React.FormEvent) => {
+  event.preventDefault();
+  const enteredText = textInputRef.current!.value;
+};
+```
